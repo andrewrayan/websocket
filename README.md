@@ -1,5 +1,9 @@
-##Install the npm
-npm install
+**Install the npm**
 
-Run
-node index.js
+    npm install
+
+**Run the Server**
+
+    node index.js
+
+Run the Client by opening **index.html** file in browser.
