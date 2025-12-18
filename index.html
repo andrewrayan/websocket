@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebSocket Chat</title>
-
+    <title>Document</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -96,15 +95,18 @@
       }
     </style>
   </head>
-
   <body>
     <div class="chat-container">
-      <div class="header">WebSocket Chat Application</div>
-
+      <div class="header">
+        <h1>WebSocket Chat Application</h1>
+      </div>
       <div id="chat"></div>
-
       <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type your message here..."
+        />
         <button id="sendButton" onclick="sendMessage()">Send</button>
       </div>
     </div>
@@ -113,41 +115,33 @@
       const socket = new WebSocket("ws://localhost:8082");
 
       socket.addEventListener("open", () => {
-        console.log("Connected");
-        socket.send("Hello Server!");
+        console.log("Connected to WebSocket server");
       });
 
-      socket.addEventListener("message", async (event) => {
-        const blob = event.data;
-
-        // Convert blob to text
-        const text = await blob.text();
-        appendMessage(text, "server");
+      socket.addEventListener("message", (event) => {
+        appendMessage(event.data, "server");
       });
 
       socket.addEventListener("close", () => {
-        console.log("Disconnected");
+        console.log("Disconnected from WebSocket server");
       });
 
       function appendMessage(message, type) {
-        let chatDiv = document.getElementById("chat");
+        const chat = document.getElementById("chat");
 
-        let messageElem = document.createElement("div");
+        const messageElem = document.createElement("div");
         messageElem.classList.add("message", type);
         messageElem.textContent = message;
-
-        chatDiv.appendChild(messageElem);
-        chatDiv.scrollTop = chatDiv.scrollHeight; // Auto scroll
+        chat.appendChild(messageElem);
+        chat.scrollTop = chat.scrollHeight;
       }
 
       function sendMessage() {
         const input = document.getElementById("messageInput");
         const message = input.value.trim();
-        if (!message) return;
-
+        if (message === "") return;
         socket.send(message);
         appendMessage(message, "client");
-
         input.value = "";
       }
     </script>
